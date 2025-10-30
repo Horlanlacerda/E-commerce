@@ -8,4 +8,4 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///minhaloja.db"
 # initialize the app with the extension
 db = SQLAlchemy(app)
 
-from loja import rotas
+from loja.admin import rotas

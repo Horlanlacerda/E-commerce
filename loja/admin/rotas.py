@@ -5,3 +5,8 @@ from loja import app, db
 
 def home():
     return "Seja bem vindo so sistema em flask!"
+
+@app.route('/registrar')
+
+def registrar():
+    return render_template('admin/registrar.html', title="Registrar user") # RenderTemplate: ponte entre o código python (backend) e o html que o usuário vê no navegador.
