@@ -1,12 +1,19 @@
-from flask import render_template, session, request, url_for
+from flask import render_template, session, request, url_for, flash 
 from loja import app, db
+from .formulario import RegistrationForm
 
 @app.route('/')
 
 def home():
     return "Seja bem vindo so sistema em flask!"
 
-@app.route('/registrar')
-
+@app.route('/registrar', methods=['GET', 'POST'])
 def registrar():
-    return render_template('admin/registrar.html', title="Registrar user") # RenderTemplate: ponte entre o código python (backend) e o html que o usuário vê no navegador.
+    form = RegistrationForm(request.form)
+    if request.method == 'POST' and form.validate():
+        #user = User(form.username.data, form.email.data,
+                    #form.password.data)
+        #db_session.add(user)
+        flash('Obrigado por registrar')
+        return redirect(url_for('login'))
+    return render_template('registrar.html', form=form, title="Página de Registros")
