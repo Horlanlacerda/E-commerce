@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///minhaloja.db"
+# configuração de uma chave secreta aleatória
 app.config['SECRET_KEY'] = 'djfjfjajl'
 # initialize the app with the extension
 db = SQLAlchemy(app)
