@@ -1,5 +1,5 @@
-from flask import render_template, session, request, url_for, flash 
-from loja import app, db
+from flask import render_template, session, request, url_for, flash,redirect 
+from loja import app, db, Bcrypt
 from .forms import RegistrationForm
 
 @app.route('/')
