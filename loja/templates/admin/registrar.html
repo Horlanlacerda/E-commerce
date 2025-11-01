@@ -5,18 +5,18 @@
 <div class="text-center h1 text-success">Registrar</div> <!-- O bootstrap permite já oferece alterações de css e js prontas, como é o caso de text-success-->
 
 <div class="container">
-    {% from "_formularioajuda.html" import render_field %}
-<form method="post" enctype="multipart/form-data">
-  <div>
-    {{ render_field(form.nome) }}
-    {{ render_field(form.usuario) }}
-    {{ render_field(form.email) }}
-    {{ render_field(form.senha) }}
-    {{ render_field(form.confirmacao) }}
-    <input type="file" name="photo">
-  </div>
-  <p><input type="submit" value="Registrar" class="btn-info"></p>
-</form>
+    {% from "_formhelpers.html" import render_field %}
+    <form method="post" enctype="multipart/form-data">
+        <div>
+          {{ render_field(form.name) }}
+          {{ render_field(form.username) }}
+          {{ render_field(form.email) }}
+          {{ render_field(form.password) }}
+          {{ render_field(form.confirm) }}
+          <input type="file" name="photo">
+        </div>
+      <p><input type="submit" value="Registrar" class="btn btn-success"></p>
+    </form>
 </div>
 
 {% endblock %}

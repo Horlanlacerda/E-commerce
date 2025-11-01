@@ -1,6 +1,6 @@
 from flask import render_template, session, request, url_for, flash 
 from loja import app, db
-from .formulario import RegistrationForm
+from .forms import RegistrationForm
 
 @app.route('/')
 
