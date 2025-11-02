@@ -1,4 +1,4 @@
-from loja import db
+from loja import app, db
 
 
 class User(db.Model):
@@ -6,10 +6,11 @@ class User(db.Model):
     name = db.Column(db.String(40), unique=False, nullable="False")
     username = db.Column(db.String(40), unique=True, nullable="False")
     email = db.Column(db.String(120), unique=True, nullable="False")
-    password = db.Colum(db.String(180), unique=False, nullable="False")
-    profile = db.Colum(db.String(180), unique=False, nullable="False", default=".profile.jpg")
+    password = db.Column(db.String(180), unique=False, nullable="False")
+    profile = db.Column(db.String(180), unique=False, nullable="False", default=".profile.jpg")
 
     def __repr__(self):
         return f'<User {self.name!r}>'
 
-db.create_all()
+with app.app_context():
+    db.create_all()
