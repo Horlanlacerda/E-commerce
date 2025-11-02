@@ -4,8 +4,11 @@ from .forms import RegistrationForm, LoginForm
 from.models import User
 import os
 
-@app.route('/')
-def home():
+@app.route('/admin')
+def admin():
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
     return render_template('admin/index.html', title='Página Admininistrativa')
 
 
@@ -27,4 +30,12 @@ def registrar():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form=LoginForm(request.form)
-    return render_template('admin/login.html', form=form, title='Página de Lógin')
+    if request.method == 'POST' and form.validate():
+        user = User.query.filter(email=form.email.data).first()
+        if user and bcrypt.check_password_hash(user.password,form.password.data):
+            session['email'] = form.email.data
+            flash(f'Obrigado {form.email.data} por logar!', category='success')
+            return redirect(request.args.get('next') or url_for('admin'))
+        else:
+            flash('Não foi possível fazer login!', category='danger')
+    return render_template('admin/login.html', form=form, title='Página de Login')
