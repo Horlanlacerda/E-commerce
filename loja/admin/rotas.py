@@ -22,7 +22,7 @@ def registrar():
         db.session.add(user)
         db.session.commit() # sobe os dados para o bd
         flash(f'Obrigado {form.name.data} por registrar', category='success')
-        return redirect(url_for('home'))
+        return redirect(url_for('admin'))
     return render_template('admin/registrar.html', form=form, title="Página de Registros")
 
 
@@ -31,7 +31,7 @@ def registrar():
 def login():
     form=LoginForm(request.form)
     if request.method == 'POST' and form.validate():
-        user = User.query.filter(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password,form.password.data):
             session['email'] = form.email.data
             flash(f'Obrigado {form.email.data} por logar!', category='success')
