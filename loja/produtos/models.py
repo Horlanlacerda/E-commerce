@@ -1,11 +1,12 @@
-from loja import db
+from loja import db, app
 
-class Marcas(db.Model):
-    id = db.Collumn(db.Integer, primary_key=True)
+class Marca(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
 
 class Categoria(db.Model):
-    id = db.Collumn(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
 
-db.create_all()
+with app.app_context():
+    db.create_all()
