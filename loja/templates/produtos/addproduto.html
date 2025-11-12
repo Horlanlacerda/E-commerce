@@ -6,16 +6,34 @@
 {% include '_messages.html' %}
 
 <div class="container">
+    <div class="row">
     <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <h2 class="text-center">Adicionar Produtos</h2>
-        {% from '_formhelpers,html' import render_field %}
+    <div class="col-md-8 p-2">
+        <h2 class="text-center bg-success p-2">Adicionar Produtos</h2>
+        {% from '_formhelpers.html' import render_field %}
         <form action="" method="POST" enctype="multipart/form-data">
 
             {{ render_field(form.name, class="form-control", placeholder="Nome do produto")}}
             {{ render_field(form.price, class="form-control", placeholder="Preço do produto")}}
             {{ render_field(form.discount, class="form-control", placeholder="Disconto do produto")}}
             {{ render_field(form.stock, class="form-control", placeholder="Estoque do produto")}}
+
+            <label form="marca">Adicionar uma Marca</label>
+            <select name="marca" id="marca" class="form-select" required>
+                <option value="">Selecione uma Marca</option>
+                {% for marca in marcas %}
+                <option value="{{marca.id}}">{{marca.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label form="categoria">Adicionar uma Categoria</label>
+            <select name="categoria" id="categoria" class="form-select" required>
+                <option value="">Selecione uma Categoria</option>
+                {% for categoria in categorias %}
+                <option value="{{categoria.id}}">{{categoria.name}}</option>
+                {% endfor %}
+            </select>
+
             {{ render_field(form.colors, class="form-control", placeholder="Cor do produto")}}
             {{ render_field(form.description, class="form-control", placeholder="Descrição do produto", rows="10")}}
 
@@ -33,5 +51,5 @@
     </div>
     <div class="col-md-2"></div>
 </div>
-
+</div>
 {% endblock %}

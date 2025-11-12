@@ -7,7 +7,7 @@ from wtforms import Form, IntegerField, StringField, BooleanField, TextAreaField
 
 class Addprodutos(Form):
     name = StringField('Nome:', [validators.data_required()])
-    prince = IntegerField('Preço:', [validators.data_required()])
+    price = IntegerField('Preço:', [validators.data_required()])
     discount = IntegerField('Disconto:', [validators.data_required()])
     stock = IntegerField('Estoque:', [validators.data_required()])
     description = TextAreaField('Descrição:', [validators.data_required()])

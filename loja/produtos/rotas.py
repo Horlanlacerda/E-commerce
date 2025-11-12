@@ -7,7 +7,7 @@ from .forms import Addprodutos
 def addmarca():
     if request.method == "POST":
         getmarca = request.form.get('marca')
-        marca = Marca(name='getmarca')
+        marca = Marca(name=getmarca)
         db.session.add(marca)
         flash(f'A marca {getmarca} foi cadastrada com sucesso', 'success')
         db.session.commit()
@@ -19,7 +19,7 @@ def addmarca():
 def addcat():
     if request.method == "POST":
         getmarca = request.form.get('categoria')
-        cat = Categoria(name='getmarca')
+        cat = Categoria(name=getmarca)
         db.session.add(cat)
         flash(f'A categoria {getmarca} foi cadastrada com sucesso', 'success')
         db.session.commit()
@@ -29,5 +29,7 @@ def addcat():
 
 @app.route('/addproduto', methods=['GET', 'POST'])
 def addproduto():
+    marcas = Marca.query.all()
+    categorias = Categoria.query.all()
     form = Addprodutos(request.form)
-    return render_template('produtos/addproduto.html', title='Cadastrar Produtos', form=form)
+    return render_template('produtos/addproduto.html', title='Cadastrar Produtos', form=form, marcas = marcas, categorias = categorias)
