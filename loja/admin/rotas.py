@@ -1,17 +1,26 @@
 from flask import render_template, session, request, url_for, flash,redirect
 from loja import app, db, bcrypt
-from loja.produtos.models import Addproduto
+from loja.produtos.models import Addproduto, Marca, Categoria
 from .forms import RegistrationForm, LoginForm
 from.models import User
 import os
 
-@app.route('/')
+@app.route('/admin')
 def admin():
     if'email' not in session:
         flash('Fazer login no sistema primeiro.', category='danger')
         return redirect(url_for('login'))
     produtos = Addproduto.query.all()
     return render_template('admin/index.html', title='Página Admininistrativa', produtos=produtos)
+
+
+@app.route('/marcas')
+def marcas():
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+    marcas = Marca.query.order_by(Marca.id.desc()).all()
+    return render_template('admin/marca.html', title='Página de Fabricantes', marcas=marcas)
 
 
 
