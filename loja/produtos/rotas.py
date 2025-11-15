@@ -21,6 +21,38 @@ def addmarca():
     return render_template('/produtos/addmarca.html', marcas='marcas')
 
 
+@app.route('/updatemarca/<int:id>', methods=['GET', 'POST'])
+def updatemarca(id):
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+
+    updatemarca = Marca.query.get_or_404(id)
+    marca = request.form.get('marca')
+    if request.method == 'POST':
+        updatemarca.name = marca
+        flash('O fabricante foi atualizado com sucesso.', category='success')
+        db.session.commit()
+        return redirect(url_for('marcas'))
+    return render_template('/produtos/updatemarca.html', title='Atualizar Fabricante', updatemarca = updatemarca)
+
+
+@app.route('/updatecat/<int:id>', methods=['GET', 'POST'])
+def updatecat(id):
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+
+    updatecat = Categoria.query.get_or_404(id)
+    categoria = request.form.get('categoria')
+    if request.method == 'POST':
+        updatecat.name = categoria
+        flash('A categoria foi atualizada com sucesso.', category='success')
+        db.session.commit()
+        return redirect(url_for('categorias'))
+    return render_template('/produtos/updatemarca.html', title='Atualizar Categoria', updatecat = updatecat)
+
+
 @app.route('/addcat', methods=['GET', 'POST'])
 def addcat():
     if'email' not in session:
