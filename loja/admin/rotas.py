@@ -23,6 +23,14 @@ def marcas():
     return render_template('admin/marca.html', title='Página de Fabricantes', marcas=marcas)
 
 
+@app.route('/categorias')
+def categorias():
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+    categorias = Categoria.query.order_by(Categoria.id.desc()).all()
+    return render_template('admin/marca.html', title='Página de Categorias', categorias=categorias)
+
 
 @app.route('/registrar', methods=['GET', 'POST'])
 def registrar():

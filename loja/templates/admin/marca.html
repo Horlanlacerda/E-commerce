@@ -54,7 +54,9 @@
 
         <tbody>
             {% if marcas %}
+
             {% for marca in marcas %}
+
             <tr class="align-middle">
                 <td>{{loop.index}}</td>
                 <td>{{marca.name}}</td>
@@ -62,7 +64,23 @@
                 <td><a href="" class="btn btn-sm btn-outline-success">Editar</a></td>
                 <td><a href="" class="btn btn-sm btn-outline-danger">Deletar</a></td>
             </tr>
+
             {% endfor %}
+
+            {% else %}
+
+            {% for categoria in categorias %}
+
+            <tr class="align-middle">
+                <td>{{loop.index}}</td>
+                <td>{{categoria.name}}</td>
+                
+                <td><a href="" class="btn btn-sm btn-outline-success">Editar</a></td>
+                <td><a href="" class="btn btn-sm btn-outline-danger">Deletar</a></td>
+            </tr>
+
+            {% endfor %}
+
             {% endif %}
         </tbody>
     </table>
