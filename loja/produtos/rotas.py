@@ -1,5 +1,5 @@
 from email.mime import image
-from flask import render_template, session, request, url_for, flash,redirect
+from flask import render_template, session, request, url_for, flash,redirect, session
 from loja import db, app, photos
 from .models import Marca, Categoria, Addproduto
 from .forms import Addprodutos
@@ -7,6 +7,10 @@ import secrets
 
 @app.route('/addmarca', methods=['GET', 'POST'])
 def addmarca():
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+
     if request.method == "POST":
         getmarca = request.form.get('marca')
         marca = Marca(name=getmarca)
@@ -19,6 +23,10 @@ def addmarca():
 
 @app.route('/addcat', methods=['GET', 'POST'])
 def addcat():
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+
     if request.method == "POST":
         getmarca = request.form.get('categoria')
         cat = Categoria(name=getmarca)
@@ -31,6 +39,10 @@ def addcat():
 
 @app.route('/addproduto', methods=['GET', 'POST'])
 def addproduto():
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+
     marcas = Marca.query.all()
     categorias = Categoria.query.all()
     form = Addprodutos(request.form)
@@ -52,6 +64,7 @@ def addproduto():
         addpro = Addproduto(name=name, price=price, discount=discount, stock=stock, description=description, colors=colors, marca_id=marca, categoria_id=categoria, image_1=image_1, image_2=image_2, image_3=image_3)
         db.session.add(addpro)
         flash(f'Produto {name} foi cadastrada com sucesso', 'success')
+        db.session.commit() # --> Responsável por salvar no banco de dados
         return redirect(url_for('admin'))
     
     return render_template('produtos/addproduto.html', title='Cadastrar Produtos', form=form, marcas = marcas, categorias = categorias)
