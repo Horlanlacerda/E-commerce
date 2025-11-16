@@ -37,22 +37,6 @@ def updatemarca(id):
     return render_template('/produtos/updatemarca.html', title='Atualizar Fabricante', updatemarca = updatemarca)
 
 
-@app.route('/updatecat/<int:id>', methods=['GET', 'POST'])
-def updatecat(id):
-    if'email' not in session:
-        flash('Fazer login no sistema primeiro.', category='danger')
-        return redirect(url_for('login'))
-
-    updatecat = Categoria.query.get_or_404(id)
-    categoria = request.form.get('categoria')
-    if request.method == 'POST':
-        updatecat.name = categoria
-        flash('A categoria foi atualizada com sucesso.', category='success')
-        db.session.commit()
-        return redirect(url_for('categorias'))
-    return render_template('/produtos/updatemarca.html', title='Atualizar Categoria', updatecat = updatecat)
-
-
 @app.route('/addcat', methods=['GET', 'POST'])
 def addcat():
     if'email' not in session:
@@ -67,6 +51,22 @@ def addcat():
         db.session.commit()
         return redirect(url_for('addcat'))
     return render_template('/produtos/addmarca.html')
+
+
+@app.route('/updatecat/<int:id>', methods=['GET', 'POST'])
+def updatecat(id):
+    if'email' not in session:
+        flash('Fazer login no sistema primeiro.', category='danger')
+        return redirect(url_for('login'))
+
+    updatecat = Categoria.query.get_or_404(id)
+    categoria = request.form.get('categoria')
+    if request.method == 'POST':
+        updatecat.name = categoria
+        flash('A categoria foi atualizada com sucesso.', category='success')
+        db.session.commit()
+        return redirect(url_for('categorias'))
+    return render_template('/produtos/updatemarca.html', title='Atualizar Categoria', updatecat = updatecat)
 
 
 @app.route('/addproduto', methods=['GET', 'POST'])
@@ -100,3 +100,37 @@ def addproduto():
         return redirect(url_for('admin'))
     
     return render_template('produtos/addproduto.html', title='Cadastrar Produtos', form=form, marcas = marcas, categorias = categorias)
+
+
+@app.route('/updateproduto/<int:id>', methods=['GET', 'POST'])
+def updateproduto(id):
+    marcas = Marca.query.all()
+    categorias = Categoria.query.all()
+    produto = Addproduto.query.get_or_404(id)
+    form = Addprodutos(request.form)
+
+    form.name.data = produto.name
+    form.price.data = produto.price
+    form.discount.data = produto.discount
+    form.stock.data = produto.stock
+    marca = request.form.get('marca')
+    categoria = request.form.get('categoria')
+    form.description.data = produto.description
+    form.colors.data = produto.colors
+
+    if request.method == 'POST':
+        produto.name = form.name.data
+        produto.price = form.price.data
+        produto.discount = form.discount.data
+        produto.stock = form.stock.data
+        produto.marca_id = marca
+        produto.categoria_id = categoria
+        produto.description = form.description.data
+        produto.colors = form.colors.data
+
+        db.session.commit()
+        flash(f'O produto foi atualizado com sucesso', 'success')
+        return redirect('/')
+
+
+    return render_template('/produtos/updateproduto.html', title='Atualizar Produto', marcas=marcas, categorias=categorias, produto=produto, form=form)

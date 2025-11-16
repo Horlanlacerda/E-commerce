@@ -1,5 +1,5 @@
 from flask_wtf.file import FileAllowed, FileField, FileRequired
-from wtforms import Form, IntegerField, StringField, BooleanField, TextAreaField, validators
+from wtforms import Form, IntegerField, StringField, BooleanField, TextAreaField, validators, DecimalField
 
 
 # StringField x TextAreaField --> O StringField é usado apenas para texto simples de linha única, enquanto o TextAreaField
@@ -7,7 +7,7 @@ from wtforms import Form, IntegerField, StringField, BooleanField, TextAreaField
 
 class Addprodutos(Form):
     name = StringField('Nome:', [validators.data_required()])
-    price = IntegerField('Preço:', [validators.data_required()])
+    price = DecimalField('Preço:', [validators.data_required()])
     discount = IntegerField('Disconto:', [validators.data_required()])
     stock = IntegerField('Estoque:', [validators.data_required()])
     description = TextAreaField('Descrição:', [validators.data_required()])
