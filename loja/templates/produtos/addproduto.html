@@ -39,13 +39,14 @@
 
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">{{ render_field(form.image_1, class="form-control", required)}}</div>
-                    <div class="col-md-4">{{ render_field(form.image_2, class="form-control", required)}}</div>
-                    <div class="col-md-4">{{ render_field(form.image_3, class="form-control", required)}}</div>
+                    <div class="col-md-4">{{ render_field(form.image_1, class="form-control", required=True)}}</div>
+                    <div class="col-md-4">{{ render_field(form.image_2, class="form-control", required=True)}}</div>
+                    <div class="col-md-4">{{ render_field(form.image_3, class="form-control", required=True)}}</div>
                 </div>
             </div>
 
             <button type="submit" class="btn btn-outline-success mt-4">Cadastrar</button>
+            <a href="{{url_for('admin')}}" class="btn btn-outline-danger" style="margin-top: 22px; margin-left: 5px;">Cancelar</a>
 
         </form>
     </div>

@@ -6,7 +6,7 @@ from .forms import RegistrationForm, LoginForm
 from.models import User
 import os
 
-@app.route('/')
+@app.route('/admin')
 def admin():
     if'email' not in session:
         flash('Fazer login no sistema primeiro.', category='danger')
