@@ -1,9 +1,25 @@
 from email.mime import image
+from sqlalchemy.exc import IntegrityError
 from flask import render_template, session, request, url_for, flash,redirect, session, current_app
 from loja import db, app, photos
 from .models import Marca, Categoria, Addproduto
 from .forms import Addprodutos
 import secrets, os
+
+
+@app.route('/')
+def home():
+    produtos = Addproduto.query.filter(Addproduto.stock > 0)
+    marcas = Marca.query.all()
+    return render_template('produtos/index.html', produtos=produtos, marcas=marcas)
+
+
+@app.route('/marca/<int:id>')
+def get_marca(id):
+
+    marca = Addproduto.query.filter_by(marca_id=id)
+    return render_template('produtos/index.html', marca = marca)
+
 
 @app.route('/addmarca', methods=['GET', 'POST'])
 def addmarca():
@@ -42,10 +58,16 @@ def deletemarca(id):
 
     marca = Marca.query.get_or_404(id)
     if request.method == 'POST':
-        db.session.delete(marca)
-        db.session.commit()
-        flash(f'A marca {marca.name} foi deletada com sucesso!', 'success')
+        try:   
+            db.session.delete(marca)
+            db.session.commit()
+            flash(f'A marca {marca.name} foi deletada com sucesso!', 'success')
+        except IntegrityError:
+            db.session.rollback()
+            flash(f'Não foi possível deletar a marca {marca.name}. Existem produtos associados a ela.', 'danger')
+
         return redirect(url_for('admin'))
+    
     flash(f'A marca {marca.name} não foi deletada!', 'warning')
     return redirect(url_for('admin'))
     
@@ -81,6 +103,26 @@ def updatecat(id):
         db.session.commit()
         return redirect(url_for('categorias'))
     return render_template('/produtos/updatemarca.html', title='Atualizar Categoria', updatecat = updatecat)
+
+
+@app.route('/deletecategoria/<int:id>', methods=['POST'])
+def deletecategoria(id):
+
+    categoria = Categoria.query.get_or_404(id)
+    if request.method == 'POST':
+        try:
+            db.session.delete(categoria)
+            db.session.commit()
+            flash(f'A categoria {categoria.name} foi deletada com sucesso!', 'success')
+
+        except IntegrityError:
+            db.session.rollback()
+            flash(f'Não foi possível deletar a marca {categoria.name}. Existem produtos associados a ela.', 'danger')
+
+        return redirect(url_for('admin'))
+    
+    flash(f'A marca {categoria.name} não foi deletada!', 'warning')
+    return redirect(url_for('admin'))
 
 
 @app.route('/addproduto', methods=['GET', 'POST'])
@@ -172,3 +214,33 @@ def updateproduto(id):
     form.colors.data = produto.colors
 
     return render_template('/produtos/updateproduto.html', title='Atualizar Produto', marcas=marcas, categorias=categorias, produto=produto, form=form)
+
+
+@app.route('/deleteproduto/<int:id>', methods=['POST'])
+def deleteproduto(id):
+
+    produto = Addproduto.query.get_or_404(id)
+
+    if request.method == 'POST':
+        try:
+            if produto.image_1:
+                try:
+                    os.unlink(os.path.join(current_app.root_path, "static/images/" + produto.image_1))
+                    os.unlink(os.path.join(current_app.root_path, "static/images/" + produto.image_2))
+                    os.unlink(os.path.join(current_app.root_path, "static/images/" + produto.image_3))
+            
+                except Exception as e:
+                    print(f"Erro ao deletar o arquivo de imagem: {e}")
+        
+            db.session.delete(produto)
+            db.session.commit()
+            flash(f'O produto {produto.name} foi deletado com sucesso!', 'success')
+        
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Ocorreu um erro ao deletar o produto {produto.name}.', 'danger')
+            print(f"Erro no banco de dados ao deletar produto: {e}")
+
+        return redirect(url_for('admin'))
+    
+    return redirect(url_for('admin'))

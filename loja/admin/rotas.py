@@ -6,6 +6,7 @@ from .forms import RegistrationForm, LoginForm
 from.models import User
 import os
 
+
 @app.route('/admin')
 def admin():
     if'email' not in session:
