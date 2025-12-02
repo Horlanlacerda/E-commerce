@@ -57,16 +57,14 @@
         {% for m in marca.items %}
         <div class="col-md-3">
             <div class="card">
-                <img src="{{url_for('static', filename='images/' + m.image_1)}}" alt="{{m.name}}" class="card-img-top" height="200" style="object-fit: contain;"> <!-- O object-fit padroniza as imagens-->
-                <div class="card-body">
+                <img src="{{url_for('static', filename='images/' + m.image_1)}}" alt="{{m.name}}" class="card-img-top" height="200" style="object-fit: contain;"> <div class="card-body">
                     {% if m.discount > 0 %}
                     <h5 style="text-shadow: 1px 1px 2px #000; color: #F00; position: absolute; top: 52%; left: 25%; font-weight: 600;"> Desconto % {{m.discount}}</h5>
                     {% endif %}
                     <h4 class="text-center">{{m.name}}</h4>
                     <p class="text-center text-nowrap">Preço R${{m.price}}</p>
                 </div>
-                <div class="card-footer d-flex justify-content-between"> <!-- D-flex é importante!-->
-                    <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
+                <div class="card-footer d-flex justify-content-between"> <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
                     <a href="#" class="float-right btn btn-sm btn-outline-warning">Comprar</a> 
                 </div>
             </div>
@@ -82,11 +80,10 @@
         <a href="{{url_for('get_marca', id = get_m.id, pagina = marca.prev_num)}}" class="btn btn-outline-success btn-sm mt-4">Anterior</a>
         {% endif %}
 
-        {% for page_num in marca.iter_pages() %}
+        {% if marca.pages > 1 %} {% for page_num in marca.iter_pages(left_edge=1, right_edge=2, left_current=1, right_current=2) %}
         {% if page_num %}
 
-        {% if marca.paginas == page_num %}
-        <a href="{{url_for('get_marca', id = get_m.id, pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4">{{page_num}}</a>
+        {% if marca.page == page_num %} <a href="{{url_for('get_marca', id = get_m.id, pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4 active">{{page_num}}</a>
         {% else %}
         <a href="{{url_for('get_marca', id = get_m.id, pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4">{{page_num}}</a>
         {% endif %}
@@ -96,10 +93,9 @@
         {% endif %}
 
         {% endfor %}
-
-        {% if marca.has_prev %}
-        <a href="{{url_for('get_marca', id = get_m.id, pagina = produtos.next_num)}}" class="btn btn-outline-success btn-sm mt-4">Próxima</a>
         {% endif %}
+
+        {% if marca.has_next %} <a href="{{url_for('get_marca', id = get_m.id, pagina = marca.next_num)}}" class="btn btn-outline-success btn-sm mt-4">Próxima</a> {% endif %}
 
       </div>
     </div>
@@ -112,16 +108,14 @@
 
         <div class="col-md-3">
             <div class="card">
-                <img src="{{url_for('static', filename='images/' + c.image_1)}}" alt="{{c.name}}" class="card-img-top" height="200" style="object-fit: contain;"> <!-- O object-fit padroniza as imagens-->
-                <div class="card-body">
+                <img src="{{url_for('static', filename='images/' + c.image_1)}}" alt="{{c.name}}" class="card-img-top" height="200" style="object-fit: contain;"> <div class="card-body">
                     {% if c.discount > 0 %}
                     <h5 style="text-shadow: 1px 1px 2px #000; color: #F00; position: absolute; top: 52%; left: 25%; font-weight: 600;"> Desconto % {{c.discount}}</h5>
                     {% endif %}
                     <h4 class="text-center">{{c.name}}</h4>
                     <p class="text-center text-nowrap">Preço R${{c.price}}</p>
                 </div>
-                <div class="card-footer d-flex justify-content-between"> <!-- D-flex é importante!-->
-                    <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
+                <div class="card-footer d-flex justify-content-between"> <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
                     <a href="#" class="float-right btn btn-sm btn-outline-warning">Comprar</a> 
                 </div>
             </div>
@@ -137,12 +131,11 @@
         {% if categoria.has_prev %}
         <a href="{{url_for('get_categoria', id = get_cat.id, pagina = categoria.prev_num)}}" class="btn btn-outline-success btn-sm mt-4">Anterior</a>
         {% endif %}
-
-        {% for page_num in categoria.iter_pages() %}
+        
+        {% if categoria.pages > 1 %} {% for page_num in categoria.iter_pages(left_edge=1, right_edge=2, left_current=1, right_current=2) %}
         {% if page_num %}
 
-        {% if categoria.paginas == page_num %}
-        <a href="{{url_for('get_categoria', id = get_cat.id, pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4">{{page_num}}</a>
+        {% if categoria.page == page_num %} <a href="{{url_for('get_categoria', id = get_cat.id, pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4 active">{{page_num}}</a>
         {% else %}
         <a href="{{url_for('get_categoria', id = get_cat.id, pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4">{{page_num}}</a>
         {% endif %}
@@ -152,10 +145,9 @@
         {% endif %}
 
         {% endfor %}
-
-        {% if categoria.has_prev %}
-        <a href="{{url_for('get_categoria', id = get_cat.id, pagina = produtos.next_num)}}" class="btn btn-outline-success btn-sm mt-4">Próxima</a>
         {% endif %}
+
+        {% if categoria.has_next %} <a href="{{url_for('get_categoria', id = get_cat.id, pagina = categoria.next_num)}}" class="btn btn-outline-success btn-sm mt-4">Próxima</a> {% endif %}
 
       </div>
     </div>
@@ -167,16 +159,14 @@
         {% for produto in produtos.items %}
         <div class="col-md-3">
             <div class="card">
-                <img src="{{url_for('static', filename='images/' + produto.image_1)}}" alt="{{produto.name}}" class="card-img-top" height="200" style="object-fit: contain;"> <!-- O object-fit padroniza as imagens-->
-                <div class="card-body">
+                <img src="{{url_for('static', filename='images/' + produto.image_1)}}" alt="{{produto.name}}" class="card-img-top" height="200" style="object-fit: contain;"> <div class="card-body">
                     {% if produto.discount > 0 %}
                     <h5 style="text-shadow: 1px 1px 2px #000; color: #F00; position: absolute; top: 52%; left: 25%; font-weight: 600;"> Desconto % {{produto.discount}}</h5>
                     {% endif %}
                     <h4 class="text-center">{{produto.name}}</h4>
                     <p class="text-center text-nowrap">Preço R${{produto.price}}</p>
                 </div>
-                <div class="card-footer d-flex justify-content-between"> <!-- D-flex é importante!-->
-                    <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
+                <div class="card-footer d-flex justify-content-between"> <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
                     <a href="#" class="float-right btn btn-sm btn-outline-warning">Comprar</a> 
                 </div>
             </div>
@@ -192,12 +182,11 @@
         {% if produtos.has_prev %}
         <a href="{{url_for('home', pagina = produtos.prev_num)}}" class="btn btn-outline-success btn-sm mt-4">Anterior</a>
         {% endif %}
-
-        {% for page_num in produtos.iter_pages() %}
+        
+        {% if produtos.pages > 1 %} {% for page_num in produtos.iter_pages(left_edge=1, right_edge=2, left_current=1, right_current=2) %}
         {% if page_num %}
 
-        {% if produtos.paginas == page_num %}
-        <a href="{{url_for('home', pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4">{{page_num}}</a>
+        {% if produtos.page == page_num %} <a href="{{url_for('home', pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4 active">{{page_num}}</a>
         {% else %}
         <a href="{{url_for('home', pagina=page_num)}}" class="btn btn-outline-success btn-sm mt-4">{{page_num}}</a>
         {% endif %}
@@ -207,8 +196,9 @@
         {% endif %}
 
         {% endfor %}
+        {% endif %}
 
-        {% if produtos.has_prev %}
+        {% if produtos.has_next %}
         <a href="{{url_for('home', pagina = produtos.next_num)}}" class="btn btn-outline-success btn-sm mt-4">Próxima</a>
         {% endif %}
 

@@ -10,7 +10,7 @@ import secrets, os
 @app.route('/')
 def home():
     pagina = request.args.get('pagina', 1, type=int)
-    produtos = Addproduto.query.filter(Addproduto.stock > 0).paginate(page = pagina, per_page=3)
+    produtos = Addproduto.query.filter(Addproduto.stock > 0).order_by(Addproduto.id.desc()).paginate(page = pagina, per_page=4)
     marcas = Marca.query.join(Addproduto, (Marca.id == Addproduto.marca_id)).all()
     categorias = Categoria.query.join(Addproduto, (Categoria.id == Addproduto.categoria_id)).all()
     return render_template('produtos/index.html', produtos=produtos, marcas=marcas, categorias = categorias)
@@ -20,7 +20,7 @@ def home():
 def get_marca(id):
     pagina = request.args.get('pagina', 1, type=int)
     get_m = Marca.query.filter_by(id=id).first_or_404()
-    marca = Addproduto.query.filter_by(marca=get_m).paginate(page = pagina, per_page=3)
+    marca = Addproduto.query.filter_by(marca=get_m).paginate(page = pagina, per_page=4)
     marcas = Marca.query.join(Addproduto, (Marca.id == Addproduto.marca_id)).all()
     categorias = Categoria.query.join(Addproduto, (Categoria.id == Addproduto.categoria_id)).all()
     return render_template('produtos/index.html', marca = marca, marcas = marcas, categorias = categorias, get_m = get_m)
@@ -30,7 +30,7 @@ def get_marca(id):
 def get_categoria(id):
     pagina = request.args.get('pagina', 1, type=int)
     get_cat = Categoria.query.filter_by(id=id).first_or_404()
-    categoria = Addproduto.query.filter_by(categoria=get_cat).paginate(page = pagina, per_page=3)
+    categoria = Addproduto.query.filter_by(categoria=get_cat).paginate(page = pagina, per_page=4)
     categorias = Categoria.query.join(Addproduto, (Categoria.id == Addproduto.categoria_id)).all()
     marcas = Marca.query.join(Addproduto, (Marca.id == Addproduto.marca_id)).all()
     return render_template('produtos/index.html', categoria = categoria, categorias = categorias, marcas = marcas, get_cat = get_cat)
