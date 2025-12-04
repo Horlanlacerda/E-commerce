@@ -36,6 +36,14 @@ def get_categoria(id):
     return render_template('produtos/index.html', categoria = categoria, categorias = categorias, marcas = marcas, get_cat = get_cat)
 
 
+@app.route('/produto/<int:id>')
+def pagina_unica(id):
+    produto = Addproduto.query.get_or_404(id)
+    marcas = Marca.query.join(Addproduto, (Marca.id == Addproduto.marca_id)).all()
+    categorias = Categoria.query.join(Addproduto, (Categoria.id == Addproduto.categoria_id)).all()
+    return render_template('produtos/pagina_unica.html', produto=produto, marcas=marcas, categorias=categorias)
+
+
 @app.route('/addmarca', methods=['GET', 'POST'])
 def addmarca():
     if'email' not in session:

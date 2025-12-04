@@ -39,7 +39,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          <a class="nav-link disabled" aria-disabled="true">Carrinho({% if 'LojainCarrinho' in session %}{{session['LojainCarrinho']|length}}{% else %}0{% endif %})</a>
         </li>
       </ul>
       <form class="d-flex" role="search">
@@ -64,8 +64,16 @@
                     <h4 class="text-center">{{m.name}}</h4>
                     <p class="text-center text-nowrap">Preço R${{m.price}}</p>
                 </div>
-                <div class="card-footer d-flex justify-content-between"> <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
-                    <a href="#" class="float-right btn btn-sm btn-outline-warning">Comprar</a> 
+                <div class="card-footer d-flex justify-content-between"> <a href="{{url_for('pagina_unica', id=m.id)}}" class="float-left btn btn-sm btn-outline-success">Detalhes</a>
+
+                <form action="{{url_for('AddCart')}}" method="POST">
+                    <input type="hidden" name="produto_id" value="{{m.id}}">
+                    <button type="submit" class="btn btn-sm btn-outline-warning float-right">Adicionar Carrinho</button>
+                    <input type="hidden" name="quantity" value="1">
+                    {% set colors = m.colors.split(',') %}
+                    {% set default_color = colors[0].split(':')[0] %}
+                    <input type="hidden" name="colors" value="{{default_color}}"> 
+                </form> 
                 </div>
             </div>
         </div>
@@ -115,8 +123,16 @@
                     <h4 class="text-center">{{c.name}}</h4>
                     <p class="text-center text-nowrap">Preço R${{c.price}}</p>
                 </div>
-                <div class="card-footer d-flex justify-content-between"> <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
-                    <a href="#" class="float-right btn btn-sm btn-outline-warning">Comprar</a> 
+                <div class="card-footer d-flex justify-content-between"> <a href="{{url_for('pagina_unica', id=c.id)}}" class="float-left btn btn-sm btn-outline-success">Detalhes</a>
+                    
+                    <form action="{{url_for('AddCart')}}" method="POST">
+                        <input type="hidden" name="produto_id" value="{{c.id}}">
+                        <button type="submit" class="btn btn-sm btn-outline-warning float-right">Adicionar Carrinho</button>
+                        <input type="hidden" name="quantity" value="1">
+                        {% set colors = c.colors.split(',') %}
+                        {% set default_color = colors[0].split(':')[0] %}
+                        <input type="hidden" name="colors" value="{{default_color}}"> 
+                    </form> 
                 </div>
             </div>
         </div>
@@ -166,8 +182,16 @@
                     <h4 class="text-center">{{produto.name}}</h4>
                     <p class="text-center text-nowrap">Preço R${{produto.price}}</p>
                 </div>
-                <div class="card-footer d-flex justify-content-between"> <a href="#" class="float-left btn btn-sm btn-outline-success">Detalhes do Produto</a>
-                    <a href="#" class="float-right btn btn-sm btn-outline-warning">Comprar</a> 
+                <div class="card-footer d-flex justify-content-between"> <a href="{{url_for('pagina_unica', id=produto.id)}}" class="float-left btn btn-sm btn-outline-success">Detalhes</a>
+                    
+                    <form action="{{url_for('AddCart')}}" method="POST">
+                        <input type="hidden" name="produto_id" value="{{produto.id}}">
+                        <button type="submit" class="btn btn-sm btn-outline-warning float-right">Adicionar Carrinho</button>
+                        <input type="hidden" name="quantity" value="1">
+                        {% set colors = produto.colors.split(',') %}
+                        {% set default_color = colors[0].split(':')[0] %}
+                        <input type="hidden" name="colors" value="{{default_color}}"> 
+                    </form> 
                 </div>
             </div>
         </div>
